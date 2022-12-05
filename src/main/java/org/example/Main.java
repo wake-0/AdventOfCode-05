@@ -36,7 +36,6 @@ public class Main {
     }
 
     void readStacks() throws IOException {
-
         try (BufferedReader br = new BufferedReader(new FileReader(this.path + "start.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -83,8 +82,17 @@ public class Main {
     void move(final Move move) {
         final Stack<Character> from = this.stacks[move.from()];
         final Stack<Character> to = this.stacks[move.to()];
-        IntStream.range(0, move.count())
-                .forEach(v -> to.push(from.pop()));
+        // Logic for 9000
+        // IntStream.range(0, move.count()).forEach(v -> to.push(from.pop()));
+
+        // Logic for 9001
+        Object[] block = IntStream.range(0, move.count())
+                .mapToObj(index -> from.pop())
+                .toArray();
+
+        for (int i = block.length - 1; i >= 0; i--) {
+            to.push((Character)block[i]);
+        }
 
         printMove(move);
         printStacks();
